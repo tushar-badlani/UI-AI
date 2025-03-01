@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.schemas import Prompt
-from app.util import generate_html_css, generate_inline
+from app.util import generate_html_css, generate_inline, generate_finetuned
 
 origins = ["*"]
 
@@ -33,3 +33,10 @@ async def generate_inline_components(prompt: Prompt):
     response = generate_inline(prompt.prompt)
 
     return eval(response)
+
+
+@app.post("/finetuned")
+async def generated_using_finetune(prompt: Prompt):
+    response = generate_finetuned(prompt.prompt)
+    result = {"html": response}
+    return result

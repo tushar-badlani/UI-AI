@@ -123,3 +123,44 @@ def generate_inline(prompt):
     print(response.text, end="")
 
     return response.text
+
+
+
+def generate_finetuned(prompt):
+    client = genai.Client(
+        api_key=api_key,
+    )
+
+    model = "tunedModels/ui-generator-2-icy8snjkqmwa"
+    contents = [
+        types.Content(
+            role="user",
+            parts=[
+                types.Part.from_text(
+                    text=""""I will provide you with prompts describing UI components, and you will generate the complete, 
+                functional code implementation. Follow the style guidelines mentioned in prompt as strictly as 
+                possible. Return the necessary HTML, CSS, and JavaScript code with inline css without any explanations or 
+                additional.The code should be modern, responsive, and follow best practices. Include proper 
+                semantic HTML5 elements, CSS with flexbox/grid layouts, and clean JavaScript with ES6+ features where 
+                appropriate. All code should be properly formatted and cross-browser compatible. Do not use any 
+                external dependencies.""" + prompt
+                ),
+            ],
+        ),
+    ]
+    generate_content_config = types.GenerateContentConfig(
+        temperature=1,
+        top_p=0.95,
+        top_k=40,
+        max_output_tokens=8192,
+    )
+
+    response = client.models.generate_content(
+        model=model,
+        contents=contents,
+        config=generate_content_config
+    )
+
+    print(response.text, end="")
+
+    return response.text
