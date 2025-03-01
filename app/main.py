@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.util import generate
+from app.schemas import Prompt
+from app.util import generate_html_css, generate_inline
 
 origins = ["*"]
 
@@ -20,6 +21,15 @@ async def root():
     return {"message": "welcome to my api!!"}
 
 
-@app.post("/generate")
-async def generate_component(prompt: str):
-    return generate(prompt)
+@app.post("/html")
+async def generate_component(prompt: Prompt):
+    response = generate_html_css(prompt.prompt)
+
+    return eval(response)
+
+
+@app.post("/inline")
+async def generate_inline_components(prompt: Prompt):
+    response = generate_inline(prompt.prompt)
+
+    return eval(response)
