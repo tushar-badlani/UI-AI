@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.schemas import Prompt
-from app.util import generate_html_css, generate_inline, generate_finetuned
+from app.schemas import Prompt, SuggestIN
+from app.util import generate_html_css, generate_inline, generate_finetuned, generate_suggestion
 
 origins = ["*"]
 
@@ -40,3 +40,10 @@ async def generated_using_finetune(prompt: Prompt):
     response = generate_finetuned(prompt.prompt)
     result = {"html": response}
     return result
+
+
+@app.post("/suggest")
+async def suggest(prompt: SuggestIN):
+    response = generate_suggestion(prompt.prompt, prompt.html)
+
+    return eval(response)
