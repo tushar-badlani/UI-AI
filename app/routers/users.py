@@ -15,7 +15,6 @@ router = APIRouter(
 
 @router.post("/", response_model=schemas.UserOut)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-
     hashed_password = get_password_hash(user.password)
     db_user = models.User(email=user.email, name=user.name, password=hashed_password, profile_pic=user.profile_pic)
     db.add(db_user)
@@ -35,6 +34,7 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == user_id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
+    user = schemas.UserOut(**user.__dict__)
     return user
 
 

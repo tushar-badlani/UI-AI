@@ -60,7 +60,6 @@ class ComponentBase(BaseModel):
 class Component(ComponentBase):
     id: int
     created_at: datetime
-    updated_at: datetime
     user_id: int
 
 

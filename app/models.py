@@ -24,9 +24,8 @@ class Components(Base):
     description = Column(String(255), nullable=False)
     html = Column(Text, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, onupdate=func.now())
     user_id = Column(Integer, ForeignKey('users.id'))
-    # user = relationship('User', backref='components')
+    user = relationship('User', backref='components')
 
 
 class Likes(Base):

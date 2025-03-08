@@ -15,13 +15,13 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[schemas.Component])
+@router.get("/")
 async def read_components(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     components = db.query(models.Components).offset(skip).limit(limit).all()
     return components
 
 
-@router.get("/{component_id}", response_model=schemas.ComponentOut)
+@router.get("/{component_id}")
 async def read_component(component_id: int, db: Session = Depends(get_db)):
     component = db.query(models.Components).filter(models.Components.id == component_id).first()
     if component is None:
@@ -30,14 +30,14 @@ async def read_component(component_id: int, db: Session = Depends(get_db)):
 
 
 
-@router.post("/", response_model=schemas.ComponentOut)
-async def create_component(component: schemas.ComponentBase, db: Session = Depends(get_db)):
-    db_component = models.Components(description=component.description, html=component.html)
+@router.post("/")
+async def create_component(component: schemas.ComponentBase, db: Session = Depends(get_db), user: schemas.User = Depends(get_current_user)):
+    db_component = models.Components(description=component.description, html=component.html, user_id=user.id)
     db.add(db_component)
     db.commit()
     db.refresh(db_component)
-    return db_component
-
-
+    print(db_component)
+    component = db.query(models.Components).filter(models.Components.id == db_component.id).first()
+    return component
 
 
