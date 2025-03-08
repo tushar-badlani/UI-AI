@@ -5,4 +5,5 @@ google-genai
 sqlalchemy
 passlib
 pyjwt
-bcrypt
+bcrypt==4.0.1
+psycopg2
