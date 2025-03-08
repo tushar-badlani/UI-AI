@@ -15,13 +15,13 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[schemas.Layout])
+@router.get("/")
 async def read_layouts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     layouts = db.query(models.Layouts).offset(skip).limit(limit).all()
     return layouts
 
 
-@router.get("/{layout_id}", response_model=schemas.LayoutOut)
+@router.get("/{layout_id}")
 async def read_layout(layout_id: int, db: Session = Depends(get_db)):
     layout = db.query(models.Layouts).filter(models.Layouts.id == layout_id).first()
     if layout is None:
@@ -29,9 +29,9 @@ async def read_layout(layout_id: int, db: Session = Depends(get_db)):
     return layout
 
 
-@router.post("/", response_model=schemas.LayoutOut)
+@router.post("/")
 async def create_layout(layout: schemas.LayoutBase, db: Session = Depends(get_db)):
-    db_layout = models.Layouts(name=layout.name, description=layout.description, html=layout.html)
+    db_layout = models.Layouts(name=layout.name, description=layout.description, html=layout.html, user_id=3)
     db.add(db_layout)
     db.commit()
     db.refresh(db_layout)
