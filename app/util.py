@@ -8,6 +8,18 @@ dotenv.load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
 
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes="bcrypt", deprecated="auto")
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
 
 def generate_html_css(prompt):
     client = genai.Client(
@@ -94,9 +106,9 @@ def generate_inline(prompt):
         response_mime_type="application/json",
         response_schema=genai.types.Schema(
             type=genai.types.Type.OBJECT,
-            required=["html"],
+            required=["jsx"],
             properties={
-                "html": genai.types.Schema(
+                "jsx": genai.types.Schema(
                     type=genai.types.Type.STRING,
                 ),
             },
@@ -104,12 +116,15 @@ def generate_inline(prompt):
         system_instruction=[
             types.Part.from_text(
                 text="""I will provide you with prompts describing UI components, and you will generate the complete, 
-                functional code implementation. Follow the style guidelines mentioned in prompt as strictly as 
-                possible. Return the necessary HTML, CSS, and JavaScript code with inline css without any explanations or 
-                additional.The code should be modern, responsive, and follow best practices. Include proper 
-                semantic HTML5 elements, CSS with flexbox/grid layouts, and clean JavaScript with ES6+ features where 
-                appropriate. All code should be properly formatted and cross-browser compatible. Do not use any 
-                external dependencies."""
+                functional code implementation. Generate a complete, functional React component using Shadcn UI components with inline Tailwind CSS. Strictly follow these rules:
+
+✅ Use only Shadcn UI components (like Button, Card, Input from @/components/ui).
+✅ No custom HTML elements if a Shadcn component exists.
+✅ Inline Tailwind classes only, no external CSS.
+✅ Modern React practices (ES6+, hooks, clean code).
+✅ No explanations, comments, or extra text — only the JSX code.
+The output must be clean, responsive, and production-ready.
+"""
             ),
         ],
     )
@@ -123,7 +138,6 @@ def generate_inline(prompt):
     print(response.text, end="")
 
     return response.text
-
 
 
 def generate_finetuned(prompt):
@@ -203,7 +217,8 @@ def generate_suggestion(prompt, html):
                 text="""I will provide you with a JSON file containing two parts: a prompt section and HTML code. 
                 Please analyze both components and provide comprehensive UI/UX improvement suggestions. 
 Please provide your suggestions in natural language, organized by priority, with clear explanations for each 
-recommendation and their potential impact on user experience. Keep your suggestions concise and actionable. Keep it below 100 words."""
+recommendation and their potential impact on user e
+xperience. Keep your suggestions concise and actionable. Keep it below 100 words."""
             ),
         ],
     )
@@ -217,3 +232,5 @@ recommendation and their potential impact on user experience. Keep your suggesti
     print(response.text, end="")
 
     return response.text
+
+

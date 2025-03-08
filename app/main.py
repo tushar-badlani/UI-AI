@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app import models
+from app.db import engine
+from app.routers import users, auth
 from app.schemas import Prompt, SuggestIN
 from app.util import generate_html_css, generate_inline, generate_finetuned, generate_suggestion
 
@@ -15,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+models.Base.metadata.create_all(bind=engine)
 @app.get("/")
 async def root():
     return {"message": "welcome to my api!!"}
@@ -47,3 +50,8 @@ async def suggest(prompt: SuggestIN):
     response = generate_suggestion(prompt.prompt, prompt.html)
 
     return eval(response)
+
+
+app.include_router(users.router)
+
+app.include_router(auth.router)
