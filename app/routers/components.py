@@ -41,3 +41,7 @@ async def create_component(component: schemas.ComponentBase, db: Session = Depen
     return component
 
 
+@router.get("/user/{user_id}")
+async def read_user_components(user_id: int, db: Session = Depends(get_db)):
+    components = db.query(models.Components).filter(models.Components.user_id == user_id).all()
+    return components
