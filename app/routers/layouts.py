@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 
 from sqlalchemy.orm import Session
+from starlette.responses import HTMLResponse
 
 from app import models, schemas
 from app.db import get_db
@@ -26,7 +27,7 @@ async def read_layout(layout_id: int, db: Session = Depends(get_db)):
     layout = db.query(models.Layouts).filter(models.Layouts.id == layout_id).first()
     if layout is None:
         raise HTTPException(status_code=404, detail="Layout not found")
-    return layout.html
+    return HTMLResponse(content=layout.html)
 
 
 @router.post("/")
