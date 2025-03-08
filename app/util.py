@@ -106,9 +106,9 @@ def generate_inline(prompt):
         response_mime_type="application/json",
         response_schema=genai.types.Schema(
             type=genai.types.Type.OBJECT,
-            required=["jsx"],
+            required=["html"],
             properties={
-                "jsx": genai.types.Schema(
+                "html": genai.types.Schema(
                     type=genai.types.Type.STRING,
                 ),
             },
@@ -116,14 +116,12 @@ def generate_inline(prompt):
         system_instruction=[
             types.Part.from_text(
                 text="""I will provide you with prompts describing UI components, and you will generate the complete, 
-                functional code implementation. Generate a complete, functional React component using Shadcn UI components with inline Tailwind CSS. Strictly follow these rules:
-
-✅ Use only Shadcn UI components (like Button, Card, Input from @/components/ui).
-✅ No custom HTML elements if a Shadcn component exists.
-✅ Inline Tailwind classes only, no external CSS.
-✅ Modern React practices (ES6+, hooks, clean code).
-✅ No explanations, comments, or extra text — only the JSX code.
-The output must be clean, responsive, and production-ready.
+                 functional code implementation. Follow the style guidelines mentioned in prompt as strictly as 
+                 possible. Return the necessary HTML, CSS, and JavaScript code with inline css without any explanations or 
+                 additional.The code should be modern, responsive, and follow best practices. Include proper 
+                 semantic HTML5 elements, CSS with flexbox/grid layouts, and clean JavaScript with ES6+ features where 
+                 appropriate. All code should be properly formatted and cross-browser compatible. Do not use any 
+                 external dependencies.
 """
             ),
         ],

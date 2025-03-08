@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import models
 from app.db import engine
-from app.routers import users, auth
+from app.routers import users, auth, layouts, components
 from app.schemas import Prompt, SuggestIN
 from app.util import generate_html_css, generate_inline, generate_finetuned, generate_suggestion
 
@@ -53,5 +53,6 @@ async def suggest(prompt: SuggestIN):
 
 
 app.include_router(users.router)
-
+app.include_router(layouts.router)
 app.include_router(auth.router)
+app.include_router(components.router)
