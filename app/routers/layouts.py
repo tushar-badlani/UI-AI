@@ -26,7 +26,7 @@ async def read_layout(layout_id: int, db: Session = Depends(get_db)):
     layout = db.query(models.Layouts).filter(models.Layouts.id == layout_id).first()
     if layout is None:
         raise HTTPException(status_code=404, detail="Layout not found")
-    return layout
+    return layout.html
 
 
 @router.post("/")
