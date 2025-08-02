@@ -6,4 +6,4 @@ sqlalchemy
 passlib
 pyjwt
 bcrypt==4.0.1
-psycopg2
+psycopg2-binary
