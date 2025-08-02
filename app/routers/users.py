@@ -16,7 +16,7 @@ router = APIRouter(
 @router.post("/", response_model=schemas.UserOut)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     hashed_password = get_password_hash(user.password)
-    db_user = models.User(email=user.email, name=user.name, password=hashed_password, profile_pic=user.profile_pic)
+    db_user = models.User(email=user.email, name=user.name, password=hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

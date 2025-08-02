@@ -14,7 +14,7 @@ class User(Base):
     password = Column(String(255), nullable=False)
     name = Column(String(100), nullable=False)
     created_at = Column(DateTime, server_default=func.now())
-    profile_pic = Column(String(255))
+    
 
 
 class Components(Base):

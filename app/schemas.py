@@ -20,7 +20,6 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
     name: str
-    profile_pic: Optional[str] = None
 
 
 class User(UserBase):
@@ -49,8 +48,7 @@ class UserOut(User):
     components: Optional[list] = []
     likes: Optional[list] = []
     comments: Optional[list] = []
-    profile_pic: Optional[str] = None
-
+    
 
 class ComponentBase(BaseModel):
     description: str
@@ -125,7 +123,6 @@ class UserUpdate(BaseModel):
     email: Optional[str] = None
     password: Optional[str] = None
     name: Optional[str] = None
-    profile_pic: Optional[str] = None
 
 
 
