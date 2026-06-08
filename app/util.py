@@ -26,7 +26,7 @@ def generate_html_css(prompt):
         api_key=api_key,
     )
 
-    model = "gemini-2.0-flash"
+    model = "gemini-3.1-flash-lite"
     contents = [
         types.Content(
             role="user",
@@ -87,7 +87,7 @@ def generate_inline(prompt):
         api_key=api_key,
     )
 
-    model = "gemini-2.5-flash"
+    model = "gemini-3.1-flash-lite"
     contents = [
         types.Content(
             role="user",
@@ -184,7 +184,7 @@ def generate_suggestion(prompt, html):
         api_key=api_key,
     )
 
-    model = "gemini-2.5-flash"
+    model = "gemini-3.1-flash-lite"
     contents = [
         types.Content(
             role="user",
